@@ -13,7 +13,6 @@ class ImageGalery extends Component {
     status: 'idle',
   };
 
-  
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.page !== this.state.page ||
@@ -31,9 +30,7 @@ class ImageGalery extends Component {
         })
         .then(picture => {
           if (picture.hits.length > 0) {
-            return this.setState((prevState) => ({
-              
-              
+            return this.setState(prevState => ({
               picture: {
                 hits: [...prevState.picture.hits, ...picture.hits],
               },
@@ -45,16 +42,12 @@ class ImageGalery extends Component {
         })
         .catch(error => this.setState({ error, status: 'rejected' }));
     }
-  };
+  }
 
-    handleloadMore = () => {
+  handleloadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
-      perPage: prevState.perPage + this.state.perPage,
-      picture: {
-                hits: [...prevState.picture.hits],
-              },
-    }));
+          }));
   };
 
   render() {
@@ -92,7 +85,11 @@ class ImageGalery extends Component {
               />
             ))}
           </ul>
-          <button type="button" onClick={this.handleloadMore} className="Button">
+          <button
+            type="button"
+            onClick={this.handleloadMore}
+            className="Button"
+          >
             Load more
           </button>
         </>

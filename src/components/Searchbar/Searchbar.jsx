@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 class Searchbar extends Component {
   state = {
     pictureName: '',
+    page: 1,
         };
 
   handleNameChange = event => {
@@ -25,7 +26,7 @@ class Searchbar extends Component {
         theme: 'colored',
       });
 
-      this.setState({ pictureName: ''});
+      this.setState({ pictureName: '', page: 1});
       return;
     }
     this.props.handleFormSubmit(pictureName);
