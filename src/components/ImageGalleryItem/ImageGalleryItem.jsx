@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types'; 
 import Modal from 'components/Modal';
 import { Component } from 'react';
+import css from './ImageGalleryItem.module.css';
 
 class ImageGalleryItem extends Component {
   state = {
@@ -17,21 +19,23 @@ class ImageGalleryItem extends Component {
     const { isModalOpen } = this.state;
 
     return (
-      <li className="ImageGalleryItem">
+      <li className={css.ImageGalleryItem}>
         <img
           src={smallImg}
           alt={tags}
-          className="ImageGalleryItem-image"
+          className={css.ImageGalleryItemImage}
           onClick={this.toogleModal}
         />
         {isModalOpen && <Modal largeImg={largeImg} tags={tags} onClick={this.toogleModal}/>}
       </li>
     );
   }
-}
+};
 
-//   ({ smallImg, largeImageURL, tags }) => {
-//
-// };
+ImageGalleryItem.propTypes = {
+  smallImg: PropTypes.string,
+  tags: PropTypes.string,
+  largeImg: PropTypes.string,
+}
 
 export default ImageGalleryItem;

@@ -1,12 +1,13 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
   state = {
     pictureName: '',
-    page: 1,
-        };
+  };
 
   handleNameChange = event => {
     this.setState({ pictureName: event.currentTarget.value.toLowerCase() });
@@ -26,24 +27,24 @@ class Searchbar extends Component {
         theme: 'colored',
       });
 
-      this.setState({ pictureName: '', page: 1});
+      this.setState({ pictureName: '', page: 1 });
       return;
     }
     this.props.handleFormSubmit(pictureName);
-    this.setState({ pictureName: ''});
+    this.setState({ pictureName: '', page: 1 });
   };
 
   render() {
     const { handleSubmit, handleNameChange, state } = this;
     return (
-      <header className="Searchbar">
-        <form className="SearchForm" onSubmit={handleSubmit}>
-          <button type="submit" className="SearchForm-button">
-            <span className="SearchForm-button-label">Search</span>
+      <header className={css.Searchbar}>
+        <form className={css.SearchForm} onSubmit={handleSubmit}>
+          <button type="submit" className={css.SearchFormButton}>
+            <span className={css.SearchFormButtonLabel}>Search</span>
           </button>
 
           <input
-            className="SearchForm-input"
+            className={css.SearchFormInput}
             type="text"
             autoComplete="off"
             autoFocus
@@ -55,6 +56,10 @@ class Searchbar extends Component {
       </header>
     );
   }
+}
+
+Searchbar.propTypes = {
+  handleFormSubmit: PropTypes.func,
 }
 
 export default Searchbar;

@@ -1,6 +1,9 @@
 import { Component } from 'react';
-import ImageGalleryItem from '../ImageGalleryItem';
 import { ThreeDots } from 'react-loader-spinner';
+import PropTypes from 'prop-types';
+import ImageGalleryItem from '../ImageGalleryItem';
+import Button from 'components/Button';
+import css from './ImageGallery.module.css';
 
 class ImageGalery extends Component {
   state = {
@@ -8,19 +11,15 @@ class ImageGalery extends Component {
       hits: [],
     },
     page: 1,
-    perPage: 12,
     error: null,
     status: 'idle',
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.page !== this.state.page ||
-      prevProps.pictureName !== this.props.pictureName
-    ) {
+    if (prevState.page !== this.state.page) {
       this.setState({ status: 'pending' });
       fetch(
-        `https://pixabay.com/api/?q=${this.props.pictureName}&page=${this.state.page}&key=30167206-9cd8436e9cf02f01e1d7e25e7&image_type=photo&orientation=horizontal&per_page=${this.state.perPage}`
+        `https://pixabay.com/api/?q=${this.props.pictureName}&page=${this.state.page}&key=30167206-9cd8436e9cf02f01e1d7e25e7&image_type=photo&orientation=horizontal&per_page=12`
       )
         .then(response => {
           if (response.ok) {
@@ -41,13 +40,43 @@ class ImageGalery extends Component {
           }
         })
         .catch(error => this.setState({ error, status: 'rejected' }));
+    } else if (prevProps.pictureName !== this.props.pictureName) {
+      this.setState({
+        picture: {
+          hits: [],
+        },
+        page: 1,
+        error: null,
+        status: 'idle',
+      });
+      fetch(
+        `https://pixabay.com/api/?q=${this.props.pictureName}&page=${this.state.page}&key=30167206-9cd8436e9cf02f01e1d7e25e7&image_type=photo&orientation=horizontal&per_page=12`
+      )
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          }
+          return Promise.reject(new Error('Nothing found'));
+        })
+        .then(picture => {
+          if (picture.hits.length > 0) {
+            return this.setState({
+              picture: { hits: picture.hits },
+              status: 'resolve',
+              page: 1,
+            });
+          } else {
+            this.setState({ picture: null, status: 'rejected' });
+          }
+        })
+        .catch(error => this.setState({ error, status: 'rejected' }));
     }
   }
 
   handleloadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
-          }));
+    }));
   };
 
   render() {
@@ -75,7 +104,7 @@ class ImageGalery extends Component {
     if (status === 'resolve') {
       return (
         <>
-          <ul className="ImageGallery">
+          <ul className={css.ImageGallery}>
             {picture.hits.map(({ id, webformatURL, largeImageURL, tags }) => (
               <ImageGalleryItem
                 key={id}
@@ -85,17 +114,15 @@ class ImageGalery extends Component {
               />
             ))}
           </ul>
-          <button
-            type="button"
-            onClick={this.handleloadMore}
-            className="Button"
-          >
-            Load more
-          </button>
+          <Button onClick={this.handleloadMore} />
         </>
       );
     }
   }
 }
+
+ImageGalery.propTypes = {
+  pictureName: PropTypes.string,
+};
 
 export default ImageGalery;

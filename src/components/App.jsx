@@ -16,9 +16,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ToastContainer autoClose={2000}/>
+        <ToastContainer autoClose={2000} />
         <Searchbar handleFormSubmit={this.handleFormSubmit} />
-        <ImageGalery pictureName={this.state.pictureName } />
+        <ImageGalery pictureName={this.state.pictureName} />
       </div>
     );
   }
