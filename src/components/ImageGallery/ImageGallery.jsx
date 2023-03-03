@@ -16,7 +16,7 @@ class ImageGalery extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.page !== this.state.page) {
+    if (prevState.page !== this.state.page && this.state.page !== 1) {
       this.setState({ status: 'pending' });
       fetch(
         `https://pixabay.com/api/?q=${this.props.pictureName}&page=${this.state.page}&key=30167206-9cd8436e9cf02f01e1d7e25e7&image_type=photo&orientation=horizontal&per_page=12`
@@ -46,11 +46,10 @@ class ImageGalery extends Component {
           hits: [],
         },
         page: 1,
-        error: null,
-        status: 'idle',
+        status: 'pending',
       });
       fetch(
-        `https://pixabay.com/api/?q=${this.props.pictureName}&page=${this.state.page}&key=30167206-9cd8436e9cf02f01e1d7e25e7&image_type=photo&orientation=horizontal&per_page=12`
+        `https://pixabay.com/api/?q=${this.props.pictureName}&page=1&key=30167206-9cd8436e9cf02f01e1d7e25e7&image_type=photo&orientation=horizontal&per_page=12`
       )
         .then(response => {
           if (response.ok) {
